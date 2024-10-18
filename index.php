@@ -39,6 +39,30 @@ if (isset($_GET['aksi'])) {
     <title></title>
     <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+    /* Tambahkan background ke seluruh halaman */
+        body {
+            background-image: url('assets/3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Tambahkan efek bayangan dan latar belakang putih untuk form */
+        .card {
+            background-color: rgba(255, 255, 255, 0.8); /* Latar belakang semi-transparan */
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: red;
+            display: none;
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -58,7 +82,7 @@ if (isset($_GET['aksi'])) {
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">SILAHKAN LOGIN</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">LOGIN</h1>
                                     </div>
 
                                     <?php 
@@ -84,14 +108,14 @@ if (isset($_GET['aksi'])) {
                                             <input type="password" name="password" class="form-control form-control-user"
                                             id="exampleInputPassword" placeholder="Password">
                                         </div>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
                                                 <label class="custom-control-label" for="customCheck">Remember
                                                 Me</label>
                                             </div>
-                                        </div>       
-                                        <button type="submit" class="btn btn-primary btn-user btn-block"> MASUK</button>
+                                        </div>        -->
+                                        <button type="submit" class="btn btn-primary btn-user btn-block"> Login</button>
                                     </form>
                                     <hr>
                                     <div class="text-center">

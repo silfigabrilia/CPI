@@ -62,9 +62,9 @@ include 'header.php';
                 $data = mysqli_query($conn,"SELECT * FROM tb_penyakit ORDER BY id_penyakit");
                 while($a=mysqli_fetch_array($data)){
 
-                    $sql1 = mysqli_query($conn,"SELECT * FROM tb_penyakit p, 
+                    $sql1 = mysqli_query($conn,"SELECT * FROM  
                         tb_gejala g, tb_identifikasi i, tb_aturan a WHERE g.id_gejala=i.id_gejala 
-                        AND g.id_gejala=a.id_gejala AND p.id_penyakit='$a[id_penyakit]' AND i.id_akun='$_GET[id_akun]' 
+                        AND g.id_gejala=a.id_gejala AND a.id_penyakit='$a[id_penyakit]' AND i.id_akun='$_GET[id_akun]' 
                         AND i.no_regidentifikasi='$_GET[no_regidentifikasi]'");
 
                 $jml_data = mysqli_num_rows($sql1);

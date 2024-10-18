@@ -23,12 +23,21 @@ if (isset($_GET['aksi'])) {
         if ($stmt = mysqli_prepare($conn, $query)) {
             mysqli_stmt_bind_param($stmt,"ssiss", $no_regidentifikasi, $tgl_identifikasi, $id_akun, $id_gejala, $kondisi);
 
-            foreach ($_POST['kondisi'] as $key => $value) {
-                $kondisi = $value;
-                $id_gejala = $_POST['id_gejala'][$key];
-                mysqli_stmt_execute($stmt);
-
+            foreach ($_POST['id_gejala'] as $key => $value) {
+                if ($_POST['kondisi'][$value]) {
+                    //untuk menampung nilai cf user
+                    $kondisi = $_POST['kondisi'][$value];  //nilai cf user
+                    $id_gejala = $value;
+                    mysqli_stmt_execute($stmt);
+                }
             }
+            // foreach ($_POST['kondisi'] as $key => $value) {
+            //     //untuk menampung nilai cf user
+            //     $kondisi = $value;  //nilai cf user
+            //     $id_gejala = $_POST['id_gejala'][$key];
+            //     mysqli_stmt_execute($stmt);
+
+            // }
             mysqli_stmt_close($stmt);
             
         }
@@ -75,13 +84,14 @@ $id_akun = $p['id_akun'];
         <?php if (empty($_GET['no_regidentifikasi'])){?>
 
         <div class="card-body">
-            <form action="identifikasi.php?aksi=identifikasi" method="POST" enctype="multipart/form-data">
+            <!-- <form action="identifikasi.php?aksi=identifikasi" method="POST" enctype="multipart/form-data"> -->
+            <form action="identifikasi.php?aksi=identifikasi" id="form-identifikasi" method="POST" enctype="multipart/form-data">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <tr>
                             <th class="text-center">No</th>
                             <th class="text-center">Gejala</th>
-                            <th class="text-center">Pilih</th>
+                            <th class="text-center">Kondisi</th>
                         </tr>
                 <?php
                 $data = mysqli_query($conn,"SELECT * FROM tb_gejala ORDER BY id_gejala");
@@ -93,18 +103,19 @@ $id_akun = $p['id_akun'];
                     <td class='text-center'>$i</td>
                     <td class='text-justify'>Apakah Udang Anda Mengalami Gejala <b>$a[nama_gejala]</b> ?</td>
                     <td >
-                    <select class='form-control' name='kondisi[]'>
+                    <select class='form-control' name='kondisi[$i]'>
                     <option selected disabled>Pilih kondisi</option>
+                    <option value='0'>Tidak</option>
                     <option value='0.2'>Tidak Tahu</option>
-                    <option value='0.4'>Mungkin</option>
-                    <option value='0.6'>Kemungkinan Besar</option>
-                    <option value='0.8'>Hampir Pasti</option>
-                    <option value='1'>Pasti</option>
+                    <option value='0.4'>Sedikit Yakin</option>
+                    <option value='0.6'>Cukup Yakin</option>
+                    <option value='0.8'>Yakin</option>
+                    <option value='1'>Sangat Yakin</option>
                     </select>
                     </td>
                     </tr>
 
-                    <input type='hidden' name='id_gejala[]' value='$a[id_gejala]'>
+                    <input type='hidden' name='id_gejala[$i]' value='$a[id_gejala]'>
                     ";
                 }
                 ?>
@@ -124,7 +135,9 @@ $id_akun = $p['id_akun'];
         <center>
             <h2 class="m-0 font-weight-bold text-primary"> Hasil Analisa Metode Certainty Factor</h2>
         </center>
-        <hr class="font-weight-bold text-primary">Rules</h5>
+        <hr>
+
+        <h5 class="font-weight-bold text-primary">Rule</h5>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <tr>
@@ -134,7 +147,6 @@ $id_akun = $p['id_akun'];
                     <th class="text-center">CF Pakar</th>
                     <th class="text-center">CF User</th>
                     <th class="text-center">Nilai CF</th>
-                    
                 </tr>
                 <?php
                 $sql = mysqli_query($conn,"SELECT * FROM tb_penyakit p, tb_gejala g, tb_identifikasi i, 
@@ -143,7 +155,7 @@ $id_akun = $p['id_akun'];
                 ORDER BY p.id_penyakit");
                 $i=0;
                 while($r = mysqli_fetch_array($sql)){
-                    // cf = h * e
+                    // cf = h * e ... CF pakar-CF user
                     $nilai_cf = $r['nilai_gejala']*$r['nilai_user'];
                     $i++;
                     echo "
@@ -156,9 +168,7 @@ $id_akun = $p['id_akun'];
                     <td class='text-center'>$nilai_cf</td>
                     </tr>
                     ";
-                }
-                ?>
-
+                }?>
             </table> 
         </div>
         <br>
@@ -168,25 +178,15 @@ $id_akun = $p['id_akun'];
             <h5 class="font-weight-bold text primary">Detail Perhitungan </h5>
             <h6>
                 <?php
-                $highestPersentage = 0;
+                $highestPercentage = 0;
                 $penyakitTerbesar = "";
                 $data = mysqli_query($conn,"SELECT * FROM tb_penyakit ORDER BY id_penyakit");
                 while($a=mysqli_fetch_array($data)){
 
-                    $sql1 = mysqli_query($conn,"SELECT * FROM tb_penyakit p, 
-                        tb_gejala g, tb_identifikasi i, tb_aturan a WHERE g.id_gejala=i.id_gejala 
-                        AND g.id_gejala=a.id_gejala AND p.id_penyakit='$a[id_penyakit]' AND i.id_akun='$id_akun' 
+                    $sql1 = mysqli_query($conn,"SELECT * FROM tb_gejala g, 
+                        tb_identifikasi i, tb_aturan a WHERE g.id_gejala=i.id_gejala 
+                        AND g.id_gejala=a.id_gejala AND a.id_penyakit='$a[id_penyakit]' AND i.id_akun='$id_akun' 
                         AND i.no_regidentifikasi='$_GET[no_regidentifikasi]'");
-
-                //     $sql1 = mysqli_query($conn, "
-                //     SELECT * 
-                //     FROM tb_penyakit p
-                //     JOIN tb_aturan a ON p.id_penyakit = a.id_penyakit
-                //     JOIN tb_gejala g ON g.id_gejala = a.id_gejala
-                //     JOIN tb_identifikasi i ON g.id_gejala = i.id_gejala
-                //     WHERE i.id_akun = '$id_akun' 
-                //     AND i.no_regidentifikasi = '$_GET[no_regidentifikasi]'
-                // ");
 
                 $jml_data = mysqli_num_rows($sql1);
 
@@ -199,12 +199,13 @@ $id_akun = $p['id_akun'];
                     if($jml_data>0){
                         $cf1 = $cflama ;
                         $cf2 = $cf_he;
-
+                        //rumus cf combine cf=cf1+cf2*(1-cf1)
                         $cfcombine = $cf1+$cf2 * (1-$cf1);
                         $cflama = $cfcombine;
 
                         echo "<div class='text-justify'>
-                        CFcombine = ".$cf1."+".$cf2."x(1-".$cf1.")=".$cfcombine."<br></div>
+                        CFcombine = " . $cf1 . " + " . $cf2 . " x (1-" . $cf1 . "
+                        ) = " . $cfcombine . "<br></div>
                         ";
                         
                         if($result['id_penyakit'] == $a['id_penyakit']) {
@@ -216,9 +217,9 @@ $id_akun = $p['id_akun'];
                     }
                 }
                 if($no>1) {
-                    echo "<p>Persentage combine pada penyakit< (" . $a['nama_penyakit'] .") : " . $lastPercentage . "%</b></p>";
-                    if($lastPercentage > $highestPersentage){
-                        $highestPersentage = $lastPercentage;
+                    echo "<p><b>Persentage combine pada penyakit (" . $a['nama_penyakit'] . ") : " . $lastPercentage . "%</b></p>";
+                    if($lastPercentage > $highestPercentage){
+                        $highestPercentage = $lastPercentage;
                         $penyakitTerbesar = $a['nama_penyakit'];
 
                     }
@@ -226,7 +227,7 @@ $id_akun = $p['id_akun'];
 
             }
             echo "
-            <b class='text-primary'>Nilai Terbesar " . $highestPersentage . "
+            <b class='text-primary'>Nilai Terbesar " . $highestPercentage . "
             %<br></b>
             <b class='text-primary'> Penyakit dengan nilai terbesar : " . $penyakitTerbesar . "<br></b>";
             //$pembulatan = number_format($highestPersentage,2);
@@ -242,11 +243,21 @@ $id_akun = $p['id_akun'];
             <?php
             $data = mysqli_query($conn,"SELECT * FROM tb_penyakit WHERE nama_penyakit='$penyakitTerbesar'");
             $a=mysqli_fetch_array($data);
-            echo "
-            <div class='text-justify'>
-            $a[keterangan];
-            </div>
-            ";
+            // echo "
+            // <div class='text-justify'>
+            // $a[keterangan];
+            // </div>
+            // ";
+            if ($a) {
+                echo "
+                <div class='text-justify'>
+                $a[keterangan];
+                </div>
+                ";
+            }
+            else {
+                echo "Tidak diketahui.";
+            }
                 ?>
             </h6>
         </div>
@@ -258,11 +269,21 @@ $id_akun = $p['id_akun'];
             <?php
             $data = mysqli_query($conn,"SELECT * FROM tb_penyakit WHERE nama_penyakit='$penyakitTerbesar'");
             $a=mysqli_fetch_array($data);
-            echo "
-            <div class='text-justify'>
-            $a[pengendalian];
-            </div>
-            ";
+            // echo "
+            // <div class='text-justify'>
+            // $a[pengendalian];
+            // </div>
+            // ";
+            if ($a) {
+                echo "
+                <div class='text-justify'>
+                $a[pengendalian];
+                </div>
+                ";
+            }
+            else {
+                echo "Tidak diketahui.";
+            }
                 ?>
             </h6>
     </div>
@@ -273,12 +294,23 @@ $id_akun = $p['id_akun'];
             <h6>
             <?php
             
-            echo "
-            <div class='text-justify'>
-            Berdasarkan hasil perhitungan metode <b>Certainty Factor</b> diatas, dapat disimpulkan bahwa udang anda kemungkinan besar terjangkit penyakit <b class='text-primary' style='font-size:25px;'>$penyakitTerbesar</b> dengan tingkat kepercayaan <b class='text-primary' style='font-size:25px;'>$highestPersentage</b>
-            $a[pengendalian];
-            </div>
-            ";
+            // echo "
+            // <div class='text-justify'>
+            // Berdasarkan hasil perhitungan metode <b>Certainty Factor</b> diatas, dapat disimpulkan bahwa udang anda kemungkinan besar terjangkit penyakit <b class='text-primary' style='font-size:25px;'>$penyakitTerbesar</b> dengan tingkat kepercayaan <b class='text-primary' style='font-size:25px;'>$highestPercentage%</b>
+            // $a[pengendalian];
+            // </div>
+            // ";
+            if ($a) {
+                echo "
+                <div class='text-justify'>
+                Berdasarkan hasil perhitungan metode <b>Certainty Factor</b> diatas, dapat disimpulkan bahwa udang anda kemungkinan besar terjangkit penyakit <b class='text-primary' style='font-size:25px;'>$penyakitTerbesar</b> dengan tingkat kepercayaan <b class='text-primary' style='font-size:25px;'>$highestPercentage%</b>
+                $a[pengendalian];
+                </div>
+                ";
+            }
+            else {
+                echo "Tidak diketahui.";
+            }
                 ?>
             </h6>
     </div>
@@ -289,7 +321,7 @@ $id_akun = $p['id_akun'];
         <input type="hidden" name="id_akun" value="<?= $id_akun ?>">
         <input type="hidden" name="no_regidentifikasi" value="<?= $_GET['no_regidentifikasi'] ?>">
         <input type="hidden" name="penyakit_cf" value="<?= $penyakitTerbesar ?>">
-        <input type="hidden" name="nilai_cf" value="<?= $highestPersentage ?>">
+        <input type="hidden" name="nilai_cf" value="<?= $highestPercentage ?>">
         
         <div class='text-left'>
             <a href="identifikasi.php" class="btn btn-secondary"><span class="fa fa-reply">&emsp; Identifikasi Ulang</span></a>
@@ -305,3 +337,23 @@ $id_akun = $p['id_akun'];
 <?php
 include 'footer.php';
 ?>
+
+<script>
+    $('#form-identifikasi').on('submit', function (e) {
+        e.preventDefault()
+        var selected = 0;
+        var select = $('#form-identifikasi select');
+
+        select.each(function () {
+            if ($(this).val() !== null) {
+                selected++;
+            }
+        });
+
+        if (selected < 1) {
+            alert('Harap pilih minimal 1 kondisi gejala!')
+        } else {
+            this.submit();
+        }
+    })
+</script>

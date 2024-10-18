@@ -28,6 +28,7 @@ include 'header.php';
                         <tr>
                             <th class="text-center">No</th>
                             <th class="text-center">Gejala</th>
+                            <th class="text-center">CF Pakar</th>
                             <th class="text-center">Penyakit</th>
                             <th class="text-center">Aksi</th>
                         </tr>
@@ -38,6 +39,7 @@ include 'header.php';
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
                             <td class="text-justify">G<?= $a['id_gejala']?> - <?= $a['nama_gejala']?></td>
+                            <td class="text-justify"><?= $a['nilai_gejala']?></td>
                             <td class="text-center">P<?= $a['id_penyakit'] ?> - <?= $a['nama_penyakit']?></td>
                             <td class="text-center">
                                 <a href="edit_aturan.php?id_aturan=<?= $a['id_aturan'] ?>" 

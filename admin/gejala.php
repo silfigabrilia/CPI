@@ -30,7 +30,6 @@ include 'header.php';
                         <tr>
                             <th class="text-center">No</th>
                             <th class="text-center">Gejala</th>
-                            <th class="text-center">Nilai</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         <?php
@@ -40,7 +39,6 @@ include 'header.php';
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
                             <td class="text-center"><?= $a['nama_gejala']?></td>
-                            <td class="text-center"><?= $a['nilai_gejala'] ?></td>
                             <td class="text-center">
                                 <a href="edit_gejala.php?id_gejala=<?= $a['id_gejala'] ?>" 
                                 class="btn btn-secondary"><span class="fa fa-pen"></span></a>
