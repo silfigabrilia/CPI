@@ -2,7 +2,24 @@
 include 'header.php';
 ?>
 
-<div class="container">
+<style scoped>
+#header {
+    background: rgba(40, 58, 90, 0.9);
+}
+section {
+    padding: 0;
+    padding-top: 100px;
+}
+</style>
+
+<section id="portfolio" class="portfolio">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+        </div>
+
+        <div id="portfolio-flters" class="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+
 	<div class="card shadow p-5 mb-5">
 		<div class = "card-header">
             <h5 class= "m-0 font-weight-bold text-primary">Detail Identifikasi</h5>
@@ -165,7 +182,7 @@ include 'header.php';
     
 </div>
 </div>
-
+        </section>
 <?php
 include 'footer.php';
 ?>

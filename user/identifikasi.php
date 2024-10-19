@@ -70,6 +70,24 @@ $p = mysqli_fetch_array($pass);
 $id_akun = $p['id_akun'];
 ?>
 
+<style scoped>
+#header {
+    background: rgba(40, 58, 90, 0.9);
+}
+section {
+    padding: 0;
+    padding-top: 100px;
+}
+</style>
+
+<section id="portfolio" class="portfolio">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+        </div>
+
+        <div id="portfolio-flters" class="d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+
 <div class="container">
 	<div class="card shadow p-5 mb-5">
         <?php if (empty($_GET['no_regidentifikasi'])){?>
@@ -333,7 +351,8 @@ $id_akun = $p['id_akun'];
     ?>
 </div>
 </div>
-
+    </div>
+</section>
 <?php
 include 'footer.php';
 ?>
