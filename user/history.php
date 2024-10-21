@@ -1,5 +1,6 @@
 <?php
 include '../assets/conn/config.php';
+
 if (isset($_GET['aksi'])) {
     if ($_GET['aksi']=='hapus'){
 
@@ -9,7 +10,14 @@ if (isset($_GET['aksi'])) {
     }
 }
         
-include 'header.php';?>
+include 'header.php';
+
+// Ambil id_akun dari session
+$username = $_SESSION['username'];
+$pass = mysqli_query($conn,"SELECT * FROM tb_akun WHERE username='$username'");
+$p = mysqli_fetch_array($pass);
+$id_akun = $p['id_akun'];
+?>
 
 <style scoped>
 #header {
@@ -56,9 +64,16 @@ section {
                             <th class="text-center">Aksi</th>
                         </tr>
                         <?php
-                        $gejala =mysqli_query($conn, "SELECT * FROM tb_hasil h, tb_akun a WHERE h.id_akun=a.id_akun ORDER BY h.id_hasil");
-                        $no=1;
-                        while($a=mysqli_fetch_array($gejala)){?>
+                // Modifikasi query untuk menampilkan hasil hanya berdasarkan id_akun
+                //$gejala =mysqli_query($conn, "SELECT * FROM tb_hasil WHERE id_akun='$id_akun' ORDER BY id_hasil");
+                $gejala = mysqli_query($conn, 
+                    "SELECT h.*, a.nama_lengkap 
+                    FROM tb_hasil h 
+                    JOIN tb_akun a ON h.id_akun = a.id_akun 
+                    WHERE h.id_akun='$id_akun' 
+                    ORDER BY h.id_hasil");
+                $no=1;
+                while($a=mysqli_fetch_array($gejala)){?>
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
                             <td class="text-center"><?= $a['nama_lengkap']?></td>

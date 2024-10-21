@@ -3,11 +3,11 @@ include '../assets/conn/config.php';
 if (isset($_GET['aksi'])) {
     if ($_GET['aksi']=='ubah'){
         $id_gejala = $_POST['id_gejala'];
-        $kode_gejala = $_POST['kode_gejala'];
+        // $kode_gejala = $_POST['kode_gejala'];
         $nama_gejala = $_POST['nama_gejala'];
-        $nilai_gejala = $_POST['nilai_gejala'];
+        // $nilai_gejala = $_POST['nilai_gejala'];
         
-        mysqli_query($conn,"UPDATE tb_gejala SET kode_gejala='$kode_gejala', nama_gejala='$nama_gejala', nilai_gejala='$nilai_gejala' WHERE id_gejala='$id_gejala'");
+        mysqli_query($conn,"UPDATE tb_gejala SET nama_gejala='$nama_gejala' WHERE id_gejala='$id_gejala'");
         header("location:gejala.php");
     }
 }

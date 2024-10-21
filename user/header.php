@@ -7,7 +7,7 @@ include '../assets/conn/cek.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -53,27 +53,26 @@ include '../assets/conn/cek.php';
           <li><a class="nav-link scrollto" href="penyakit.php">Penyakit</a></li>
           <li><a class="nav-link scrollto" href="history.php">History</a></li>
           <li><a class="nav-link scrollto" href="tentang.php">Tentang</a></li>
-          <li class="dropdown" data-toggle="dropdown" >
-            <a href="#">
-              <span>
-                <?php
-                $username=$_SESSION['username'];
-                $det=mysqli_query($conn,"select * from tb_akun where username='$username'");
-                while($d=mysqli_fetch_array($det)){
-                  ?>
-                  <span><?php echo $d['nama_lengkap'] ?></span>
-                  <?php 
-                }
-                ?>
-              </span>
-              <i class="bi bi-person"></i>
-            </a>
-            <ul>
-              <li><a href="profil.php">Akun </a></li>
-              <li><a href="logout.php" data-toggle="modal" data-target="#logoutModal">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
+          <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <span>
+      <?php
+      $username = $_SESSION['username'];
+      $det = mysqli_query($conn, "SELECT * FROM tb_akun WHERE username='$username'");
+      while ($d = mysqli_fetch_array($det)) {
+      ?>
+        <span><?php echo $d['nama_lengkap']; ?></span>
+      <?php
+      }
+      ?>
+    </span>
+    <i class="bi bi-person"></i>
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="profil.php">Akun</a></li>
+    <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a></li>
+  </ul>
+</li>
           
         <!-- End of Sidebar -->
         <i class="bi bi-list mobile-nav-toggle"></i>
