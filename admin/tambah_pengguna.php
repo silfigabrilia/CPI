@@ -51,8 +51,8 @@ include 'header.php';
                     <label>Jenis Kelamin</label>
                     <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                         <option value="" disabled selected>Pilih</option>
-                        <option>Laki-Laki</option>
-                        <option>Perempuan</option>
+                        <option>Pria</option>
+                        <option>Wanita</option>
                     </select>
                     <div class="error-message" id="jk_error" style="color:red; display:none;">
                         Jenis kelamin harus dipilih!

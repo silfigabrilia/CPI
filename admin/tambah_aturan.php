@@ -37,6 +37,7 @@ include 'header.php';
                     <label>Nilai Gejala</label>
                     <select name="nilai_gejala" class="form-control">
                         <option selected disabled>Pilih</option>
+                        <option>-0.4</option>
                         <option>-0.2</option>
                         <option>0</option>
                         <option>0.2</option>

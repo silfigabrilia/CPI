@@ -44,8 +44,8 @@ include 'header.php';
                     <label>Jenis Kelamin</label>
                     <select name="jenis_kelamin" class="form-control">
                         <option selected><?=$aa['jenis_kelamin']?></option>
-                        <option>Laki-Laki</option>
-                        <option>Perempuan</option>
+                        <option>Pria</option>
+                        <option>Wanita</option>
                     </select>
                 </div>
                 <div class="form-group">

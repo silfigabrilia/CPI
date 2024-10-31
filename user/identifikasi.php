@@ -19,32 +19,38 @@ if (isset($_GET['aksi'])) {
         $id_akun = $_POST['id_akun'];
 
         $query = "INSERT INTO tb_identifikasi(no_regidentifikasi, tgl_identifikasi, id_akun, id_gejala, nilai_user) VALUES (?, ?, ?, ?, ?)";
+    if ($stmt = mysqli_prepare($conn, $query)) {
+        mysqli_stmt_bind_param($stmt, "ssiss", $no_regidentifikasi, $tgl_identifikasi, $id_akun, $id_gejala, $kondisi);
 
-        if ($stmt = mysqli_prepare($conn, $query)) {
-            mysqli_stmt_bind_param($stmt,"ssiss", $no_regidentifikasi, $tgl_identifikasi, $id_akun, $id_gejala, $kondisi);
+        // foreach ($_POST['id_gejala'] as $key => $value) {
+        //     if ($_POST['kondisi'][$value]) {
+        //         //untuk menampung nilai cf user
+        //         $kondisi = $_POST['kondisi'][$value];  //nilai cf user
+        //         $id_gejala = $value;
+        //         mysqli_stmt_execute($stmt);
 
-            foreach ($_POST['id_gejala'] as $key => $value) {
-                if ($_POST['kondisi'][$value]) {
-                    //untuk menampung nilai cf user
-                    $kondisi = $_POST['kondisi'][$value];  //nilai cf user
-                    $id_gejala = $value;
-                    mysqli_stmt_execute($stmt);
-                }
+        foreach ($_POST['id_gejala'] as $key => $value) {
+            // Pastikan kondisi terisi dan gejala memiliki nilai yang valid
+            if (isset($_POST['kondisi'][$value]) && $_POST['kondisi'][$value]) {
+            //if ($_POST['kondisi'][$value]) {
+                $kondisi = $_POST['kondisi'][$value];  // nilai cf user
+                $id_gejala = $value;
+                mysqli_stmt_execute($stmt);
             }
-            // foreach ($_POST['kondisi'] as $key => $value) {
-            //     //untuk menampung nilai cf user
-            //     $kondisi = $value;  //nilai cf user
-            //     $id_gejala = $_POST['id_gejala'][$key];
-            //     mysqli_stmt_execute($stmt);
+        }
 
-            // }
+        // foreach ($_POST['kondisi'] as $key => $value) {
+        //     //untuk menampung nilai cf user
+        //     $kondisi = $value;  //nilai cf user
+        //     $id_gejala = $_POST['id_gejala'][$key];
+        //     mysqli_stmt_execute($stmt);
+        // }
             mysqli_stmt_close($stmt);
             
         }
-
         mysqli_close($conn);
-            header("location:identifikasi.php?no_regidentifikasi=$no_regidentifikasi");
-            exit();
+        header("Location: identifikasi.php?no_regidentifikasi=$no_regidentifikasi");
+        exit();
 
         // mysqli_query($conn,"DELETE FROM tb_gejala WHERE id_gejala='$_GET[id_gejala]'");
         
