@@ -44,7 +44,7 @@ include 'header.php';?>
                             <td class="text-center">
                                 <a href="history_det.php?no_regidentifikasi=<?= $a['no_regidentifikasi'] ?>&id_akun=<?= $a['id_akun']?>" 
                                 class="btn btn-secondary"><span class="fa fa-eye"></span></a>
-                                <a href="history.php?no_regidentifikasi=<?= $a['no_regidentifikasi'] ?>&aksi=hapus" class="btn btn-danger"  onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');"><span class="fa fa-trash"></span></a>
+                                <!-- <a href="history.php?no_regidentifikasi=<?= $a['no_regidentifikasi'] ?>&aksi=hapus" class="btn btn-danger"  onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');"><span class="fa fa-trash"></span></a> -->
                             </td>
                         </tr>
                         <?php }?>

@@ -93,7 +93,6 @@ if (isset($_GET['aksi'])) {
                                         }elseif ($_GET['pesan']=='berhasil') {
                                             echo "<div class='alert alert-primary'><span class='fa fa-check'></span>&nbsp; Akun Berhasil Terdaftar !!</div>";
                                         }
-                                        
                                     }
                                     ?>
 

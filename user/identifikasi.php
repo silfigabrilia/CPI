@@ -29,12 +29,17 @@ if (isset($_GET['aksi'])) {
         //         $id_gejala = $value;
         //         mysqli_stmt_execute($stmt);
 
-        foreach ($_POST['id_gejala'] as $key => $value) {
-            // Pastikan kondisi terisi dan gejala memiliki nilai yang valid
-            if (isset($_POST['kondisi'][$value]) && $_POST['kondisi'][$value]) {
-            //if ($_POST['kondisi'][$value]) {
-                $kondisi = $_POST['kondisi'][$value];  // nilai cf user
-                $id_gejala = $value;
+        // foreach ($_POST['id_gejala'] as $key => $value) {
+        //     // Pastikan kondisi terisi dan gejala memiliki nilai yang valid
+        //     if (isset($_POST['kondisi'][$value]) && $_POST['kondisi'][$value]) {
+        //     //if ($_POST['kondisi'][$value]) {
+        //         $kondisi = $_POST['kondisi'][$value];  // nilai cf user
+        //         $id_gejala = $value;
+
+        foreach ($_POST['id_gejala'] as $key => $id_gejala) {
+            // Ensure 'kondisi' is set and has a value for the current 'id_gejala'
+            if (isset($_POST['kondisi'][$key]) && $_POST['kondisi'][$key] != '') {
+                $kondisi = $_POST['kondisi'][$key];  // User's input for confidence level
                 mysqli_stmt_execute($stmt);
             }
         }
